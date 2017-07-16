@@ -175,7 +175,11 @@ def load_and_apply():
     saver = tf.train.Saver()
     saver.restore(sess, MODEL_SAVE_PATH)
     test_num = len(datas)
-    fig, axes = plt.subplots(4, 4, figsize=(5, 5))
+    batch_size = 25
+    NUM_HI = 5 
+    NUM_WID = 5
+    fig, axes = plt.subplots(NUM_HI, NUM_WID, figsize=(5, 5))
+
     # Visualize the pixels using matplotlib
     def key_event(e):
         print e.key
@@ -183,9 +187,6 @@ def load_and_apply():
             random_test_batch()
 
     def random_test_batch():
-        batch_size = 16 
-        NUM_HI = 4
-        NUM_WID = 4
         batch_xs, batch_ys = get_next_batch(datas, labels, batch_size)
         classes = sess.run(tf.argmax(y_conv,1), feed_dict={x_image: batch_xs,
                                             y_: batch_ys, 
@@ -199,6 +200,7 @@ def load_and_apply():
                 #axes[i][j].imshow(batch_xs[i*NUM_HI+j],interpolation='hanning')
                 axes[i][j].imshow(batch_xs[i*NUM_HI+j])
         plt.show()
+
     fig.canvas.mpl_connect('key_press_event', key_event)
     random_test_batch() 
 
